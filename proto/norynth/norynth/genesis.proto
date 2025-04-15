@@ -1,0 +1,17 @@
+syntax = "proto3";
+package norynth.norynth;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "norynth/norynth/params.proto";
+
+option go_package = "norynth/x/norynth/types";
+
+// GenesisState defines the norynth module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

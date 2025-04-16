@@ -7,3 +7,5 @@ release/
 *.dot
 *.log
 *.ign
+go*.linux-amd64.tar.gz
+*.tar.gz

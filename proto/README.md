@@ -1,16 +1,15 @@
 # Protocol Buffer Definitions
 
 ## Directory Structure
-```diff
-- proto/
-+ proto/                # Root of all protocol buffers
-   ├── norynth/         # Chain-specific types
-   │   ├── genesis.proto
-   │   ├── params.proto
-   │   └── tx.proto
-   └── third_party/     # Cosmos SDK dependencies
-       ├── cosmos/      # Cosmos SDK types
-       └── ibc/        # IBC-related definitions
+```
+proto/  # Root of all protocol buffers
+├── norynth/  # Chain-specific types
+│   ├── genesis.proto
+│   ├── params.proto
+│   └── tx.proto
+└── third_party/  # Cosmos SDK dependencies
+    ├── cosmos/  # Cosmos SDK types
+    └── ibc/  # IBC-related definitions
 ```
 
 ## Compilation

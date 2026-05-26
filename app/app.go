@@ -85,7 +85,7 @@ const (
 	// Name is the name of the application.
 	Name = "norynth"
 	// AccountAddressPrefix is the prefix for accounts addresses.
-	AccountAddressPrefix = "cosmos"
+	AccountAddressPrefix = "norynth"
 	// ChainCoinType is the coin type of the chain.
 	ChainCoinType = 118
 )

@@ -1,28 +1,44 @@
 version: 1
+build:
+  binary: "norynthd"
+  proto:
+    path: "proto"
+    third_party_paths:
+    - "third_party/proto"
+    - "proto_vendor"
 validation: sovereign
-accounts: 
-- name: alice
+accounts:
+- name: faucet
   coins:
-  - 20000token
-  - 200000000stake
-- name: bob
+  - 1000000000000ukrn
+- name: ecosystem
   coins:
-  - 10000token
-  - 100000000stake
+  - 250000000000000ukrn
+- name: contributors
+  coins:
+  - 200000000000000ukrn
+- name: builders
+  coins:
+  - 150000000000000ukrn
+- name: treasury
+  coins:
+  - 150000000000000ukrn
+- name: liquidity
+  coins:
+  - 100000000000000ukrn
+- name: community
+  coins:
+  - 100000000000000ukrn
+- name: strategic
+  coins:
+  - 50000000000000ukrn
 client:
   openapi:
-    path: docs/static/openapi.yml
+    path: "docs/static/openapi.yml"
 faucet:
-  name: bob
+  name: faucet
   coins:
-  - 5token
-  - 100000stake
+  - 10000000000ukrn
 validators:
 - name: alice
-  bonded: 100000000stake
-- name: validator1
-  bonded: 100000000stake
-- name: validator2
-  bonded: 200000000stake
-- name: validator3
-  bonded: 300000000stake
+  bonded: 50000000000000ukrn

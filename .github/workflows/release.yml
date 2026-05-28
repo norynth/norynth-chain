@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -27,13 +27,29 @@ jobs:
         id: vars
         uses: ignite/cli/actions/release/vars@main
 
-      - name: Issue Release Assets
+      - name: Install C Cross-Compiler for ARM64
+        if: ${{ steps.vars.outputs.should_release == 'true' }}
+        run: sudo apt-get update && sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Issue Release Assets (linux/amd64)
         uses: ignite/cli/actions/cli@main
         if: ${{ steps.vars.outputs.should_release == 'true' }}
         with:
-          args: chain build --release --release.prefix ${{ steps.vars.outputs.tarball_prefix }} -t linux:amd64 -t darwin:amd64 -t darwin:arm64 -y
+          args: chain build --release --release.prefix ${{ steps.vars.outputs.tarball_prefix }} -t linux:amd64 --build.tags sonic.noasm -y
         env:
           DO_NOT_TRACK: 1
+          CGO_ENABLED: 1
+          GOFLAGS: "-buildvcs=false"
+
+      - name: Issue Release Assets (linux/arm64)
+        uses: ignite/cli/actions/cli@main
+        if: ${{ steps.vars.outputs.should_release == 'true' }}
+        with:
+          args: chain build --release --release.prefix ${{ steps.vars.outputs.tarball_prefix }} -t linux:arm64 --build.tags sonic.noasm -y
+        env:
+          DO_NOT_TRACK: 1
+          CGO_ENABLED: 1
+          CC: aarch64-linux-gnu-gcc
           GOFLAGS: "-buildvcs=false"
 
       - name: Delete the "latest" Release
@@ -46,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish the Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: ${{ steps.vars.outputs.should_release == 'true' }}
         with:
           tag_name: ${{ steps.vars.outputs.tag_name }}

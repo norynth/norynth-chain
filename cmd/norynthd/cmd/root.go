@@ -87,6 +87,13 @@ func NewRootCmd() *cobra.Command {
 		autoCliOpts.Modules[name] = mod
 	}
 
+	// Register wasm modules for CLI (not yet supported by depinject)
+	wasmModules := app.RegisterWasm(clientCtx.InterfaceRegistry)
+	for name, mod := range wasmModules {
+		moduleBasicManager[name] = module.CoreAppModuleBasicAdaptor(name, mod)
+		autoCliOpts.Modules[name] = mod
+	}
+
 	initRootCmd(rootCmd, clientCtx.TxConfig, moduleBasicManager)
 
 	overwriteFlagDefaults(rootCmd, map[string]string{

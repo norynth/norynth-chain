@@ -78,6 +78,8 @@ import (
 	norynthmodulekeeper "norynth/x/norynth/keeper"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
+	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
+
 	"norynth/docs"
 )
 
@@ -146,6 +148,7 @@ type App struct {
 	ScopedKeepers             map[string]capabilitykeeper.ScopedKeeper
 
 	NorynthKeeper norynthmodulekeeper.Keeper
+	WasmKeeper    wasmkeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -264,6 +267,11 @@ func New(
 
 	// register legacy modules
 	if err := app.registerIBCModules(appOpts); err != nil {
+		return nil, err
+	}
+
+	// register wasm module
+	if err := app.registerWasmModule(appOpts); err != nil {
 		return nil, err
 	}
 

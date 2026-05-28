@@ -56,6 +56,8 @@ import (
 	norynthmodulev1 "norynth/api/norynth/norynth/module"
 	_ "norynth/x/norynth/module" // import for side-effects
 	norynthmoduletypes "norynth/x/norynth/types"
+
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -92,6 +94,8 @@ var (
 		group.ModuleName,
 		consensustypes.ModuleName,
 		circuittypes.ModuleName,
+		// wasm module
+		wasmtypes.ModuleName,
 		// chain modules
 		norynthmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
@@ -117,6 +121,8 @@ var (
 		ibctransfertypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		// wasm module
+		wasmtypes.ModuleName,
 		// chain modules
 		norynthmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
@@ -136,6 +142,8 @@ var (
 		capabilitytypes.ModuleName,
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
+		// wasm module
+		wasmtypes.ModuleName,
 		// chain modules
 		norynthmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
@@ -158,6 +166,7 @@ var (
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
+		{Account: wasmtypes.ModuleName},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 

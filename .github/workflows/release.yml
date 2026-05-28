@@ -37,7 +37,7 @@ jobs:
           mkdir -p release
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
             go build -o release/norynthd-linux-amd64 \
-            --build.tags sonic.noasm \
+            -tags "sonic.noasm" \
             -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=Norynth -X github.com/cosmos/cosmos-sdk/version.AppName=norynthd -X github.com/cosmos/cosmos-sdk/version.Version=${{ steps.vars.outputs.version }} -X github.com/cosmos/cosmos-sdk/version.Commit=${{ github.sha }} -X norynth/cmd/norynthd/cmd.ChainID=norynth" \
             ./cmd/norynthd
         env:
@@ -49,7 +49,7 @@ jobs:
         run: |
           CC=aarch64-linux-gnu-gcc CGO_ENABLED=1 GOOS=linux GOARCH=arm64 \
             go build -o release/norynthd-linux-arm64 \
-            --build.tags sonic.noasm \
+            -tags "sonic.noasm" \
             -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=Norynth -X github.com/cosmos/cosmos-sdk/version.AppName=norynthd -X github.com/cosmos/cosmos-sdk/version.Version=${{ steps.vars.outputs.version }} -X github.com/cosmos/cosmos-sdk/version.Commit=${{ github.sha }} -X norynth/cmd/norynthd/cmd.ChainID=norynth" \
             ./cmd/norynthd
         env:

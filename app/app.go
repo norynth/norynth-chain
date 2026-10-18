@@ -18,6 +18,7 @@ import (
 	_ "cosmossdk.io/x/nft/module" // import for side-effects
 	_ "cosmossdk.io/x/upgrade"    // import for side-effects
 	upgradekeeper "cosmossdk.io/x/upgrade/keeper"
+	upgradetypes "cosmossdk.io/x/upgrade/types"
 	abci "github.com/cometbft/cometbft/abci/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -301,6 +302,15 @@ func New(
 		}
 		return app.App.InitChainer(ctx, req)
 	})
+
+	// Register upgrade handlers and, if a wasm upgrade is pending on disk,
+	// set the store loader so the wasm store is created at the upgrade height.
+	app.setupUpgradeHandlers()
+	if upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk(); err == nil {
+		if upgradeInfo.Name == WasmUpgradeName {
+			app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &StoreUpgrades))
+		}
+	}
 
 	if err := app.Load(loadLatest); err != nil {
 		return nil, err

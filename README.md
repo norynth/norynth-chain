@@ -1,47 +1,37 @@
 # Norynth Chain
-Norynth Chain – A Cosmos SDK-based blockchain for decentralized cognition and data integrity.
 
-## Get Started
+The settlement layer for Norynth commerce. KRN settles service sales,
+escrow, and licensing on-chain.
 
-To get started with Norynth Chain, run the following command:
+**Status:** Testnet live (`norynth`), wasm-capable. CosmWasm contract
+store/instantiate/execute proven 2026-10-26. Mainnet target: `norynth-1`.
 
-ignite chain serve
+## What this is
 
-The `serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+- Cosmos SDK v0.50.13 chain, CometBFT consensus
+- CosmWasm v0.52.0 — live on testnet
+- Denom: `ukrn` (1 KRN = 1,000,000 ukrn)
+- Testnet chain ID: `norynth`
 
-### Configure
+## Build from source
 
-Your blockchain in development can be configured using the `config.yml` file. For more information, refer to the [Ignite CLI docs](https://docs.ignite.com).
+```bash
+git clone https://github.com/norynth/norynth-chain.git
+cd norynth-chain
+CGO_ENABLED=1 go build -tags sonic.noasm -o build/norynthd ./cmd/norynthd
+```
 
-### Web Frontend
+Requires Go 1.23+ and `libwasmvm.x86_64.so` (shipped with wasmvm v2.1.0).
 
-Ignite CLI offers scaffolding for both Vue and React frontends:
+## Run a node
 
-- For a Vue frontend, run: `ignite scaffold vue`
-- For a React frontend, run: `ignite scaffold react`
+Testnet join instructions: https://chain.norynth.com/docs/node-operators/validator-guide
 
-These commands can be executed within your scaffolded blockchain project.
+## Documentation
 
-## Release
+- Chain docs: https://chain.norynth.com/docs/
+- Cloud / infrastructure: https://cloud.norynth.com/
 
-To release a new version of your blockchain, create and push a new tag with the `v` prefix. This will automatically create a draft release with the configured targets.
+## License
 
-git tag v0.1 git push origin v0.1
-
-Once the draft release is created, you can make any final changes from the release page and publish it.
-
-### Install
-
-To install the latest version of your blockchain node's binary, execute the following command:
-
-curl https://get.ignite.com/username/norynth@latest! | sudo bash
-
-Replace `username/norynth` with your actual `username` and `repo_name` from GitHub. For more details, refer to the [installation process](https://github.com/allinbits/starport-installer).
-
-## Learn More
-
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/ignite)
+Apache-2.0

@@ -1,21 +1,22 @@
-# docs/DEVELOPERS.md
-
 # Norynth Developer Portal
 
-## Core Resources
-- [API Reference](/docs) (Swagger UI)
-- [Quickstart Guide](./guides/QUICKSTART.md)
-- [Testnet Deployment](./guides/TESTNET.md)
+## Current documentation (live)
 
-## Advanced Topics
-- [Smart Contracts (CosmWasm)](./guides/COSMWASM.md)
-- [Cross-Chain (IBC)](./guides/IBC.md)
-- [Protobuf Schemas](../proto/README.md)
+- **Chain docs:** https://chain.norynth.com/docs/
+- **API reference:** https://chain.norynth.com/docs/apis
+- **Node operator guide:** https://chain.norynth.com/docs/node-operators/validator-guide
+- **Tokenomics:** https://chain.norynth.com/tokenomics
 
-## Development Workflows
+## In-repo
+
+- **Protobuf schemas:** [`../proto/README.md`](../proto/README.md)
+
+## Historical
+
+- **2025 Ignite tryout guides:** [`./_historical-2025/guides/`](./_historical-2025/guides/) — retired, do not follow.
+
+## Build
+
 ```bash
-# Build all documentation
+# API docs (docs.go serves static/openapi.yml + template/index.tpl)
 make docs
-
-# Sync to web interface
-make sync-docs

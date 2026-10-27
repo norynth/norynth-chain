@@ -63,7 +63,7 @@ install:
 ###  Protobuf  ###
 ##################
 
-# Use this target if you do not want to use Ignite for generating proto files
+# proto-deps installs the buf + protoc-gen toolchain (standard Cosmos, not Ignite). proto-gen currently calls ignite generate proto-go; replace with buf if Ignite is removed.
 GOLANG_PROTOBUF_VERSION=1.28.1
 GRPC_GATEWAY_VERSION=1.16.0
 GRPC_GATEWAY_PROTOC_GEN_OPENAPIV2_VERSION=2.20.0

@@ -1,21 +1,18 @@
-# This workflow is useful if you want to automate the process of:
+# Release workflow — norynth-chain
 #
-# a) Creating a new prelease when you push a new tag with a "v" prefix (version).
+# On a push of a tag with a "v" prefix (e.g. v0.2.0), builds a linux/amd64
+# binary and creates a draft prerelease with it. On a push to main, no
+# release is created (only tag pushes trigger a release).
 #
-#    This type of prerelease is meant to be used for production: alpha, beta, rc, etc. types of releases.
-#    After the prerelease is created, you need to make your changes on the release page at the relevant
-#    Github page and publish your release.
-#
-# b) Creating/updating the "latest" prerelease when you push to your default branch.
-#
-#    This type of prelease is useful to make your bleeding-edge binaries available to advanced users.
-#
-# The workflow will not run if there is no tag pushed with a "v" prefix and no change pushed to your
-# default branch.
-on: push
+# ARM64 is NOT built: wasmvm has no ARM64 consensus build, so an ARM64
+# binary cannot run the chain (CosmWasm is required). x86_64 only.
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
-  might_release:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -25,45 +22,42 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Prepare Release Variables
-        id: vars
-        uses: ignite/cli/actions/release/vars@main
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
 
-      - name: Install C Cross-Compiler for ARM64
-        if: ${{ steps.vars.outputs.should_release == 'true' }}
-        run: sudo apt-get update && sudo apt-get install -y gcc-aarch64-linux-gnu
+      - name: Install libwasmvm
+        run: |
+          sudo mkdir -p /opt/wasmvm
+          # wasmvm ships the .so in the Go module cache after `go mod download`
+          go mod download github.com/CosmWasm/wasmvm/v2
+          cp "$(go env GOMODCACHE)"/github.com/\!cosm\!wasm/wasmvm/v2@*/internal/api/libwasmvm.x86_64.so /opt/wasmvm/
+          ls -lh /opt/wasmvm/
 
-      - name: Issue Release Assets (linux/amd64)
-        if: ${{ steps.vars.outputs.should_release == 'true' }}
+      - name: Build (linux/amd64)
         run: |
           mkdir -p release
           CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
             go build -o release/norynthd-linux-amd64 \
             -tags "sonic.noasm" \
-            -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=Norynth -X github.com/cosmos/cosmos-sdk/version.AppName=norynthd -X github.com/cosmos/cosmos-sdk/version.Version=${{ steps.vars.outputs.version }} -X github.com/cosmos/cosmos-sdk/version.Commit=${{ github.sha }} -X norynth/cmd/norynthd/cmd.ChainID=norynth" \
+            -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=Norynth -X github.com/cosmos/cosmos-sdk/version.AppName=norynthd -X github.com/cosmos/cosmos-sdk/version.Version=${GITHUB_REF#refs/tags/v} -X github.com/cosmos/cosmos-sdk/version.Commit=${GITHUB_SHA}" \
             ./cmd/norynthd
         env:
+          LD_LIBRARY_PATH: /opt/wasmvm
           DO_NOT_TRACK: 1
           GOFLAGS: "-buildvcs=false"
 
-      - name: Issue Release Assets (linux/arm64)
-        if: ${{ steps.vars.outputs.should_release == 'true' }}
+      - name: Verify binary runs
         run: |
-          CC=aarch64-linux-gnu-gcc CGO_ENABLED=1 GOOS=linux GOARCH=arm64 \
-            go build -o release/norynthd-linux-arm64 \
-            -tags "sonic.noasm" \
-            -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=Norynth -X github.com/cosmos/cosmos-sdk/version.AppName=norynthd -X github.com/cosmos/cosmos-sdk/version.Version=${{ steps.vars.outputs.version }} -X github.com/cosmos/cosmos-sdk/version.Commit=${{ github.sha }} -X norynth/cmd/norynthd/cmd.ChainID=norynth" \
-            ./cmd/norynthd
-        env:
-          DO_NOT_TRACK: 1
-          GOFLAGS: "-buildvcs=false"
+          LD_LIBRARY_PATH=/opt/wasmvm release/norynthd-linux-amd64 version --long
 
-      - name: Publish the Release
+      - name: Publish release
         uses: softprops/action-gh-release@v2
-        if: ${{ steps.vars.outputs.should_release == 'true' }}
         with:
-          tag_name: ${{ steps.vars.outputs.tag_name }}
+          tag_name: ${{ github.ref_name }}
           files: release/*
           prerelease: true
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

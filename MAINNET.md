@@ -14,17 +14,17 @@ state. This document records the separation so it is never ambiguous.
 |---|---|
 | **Chain ID** | `norynth` |
 | **Host** | `norynth-vm` (`158.180.40.102`), Oracle `VM.Standard.E2.1.Micro` |
-| **Home** | `~/.norynth/` on the VM |
+| **Home** | the node's home on the VM |
 | **Denom** | `ukrn` (1 KRN = 1,000,000 ukrn) |
-| **Genesis accounts** | `faucet`, `alice` (validator, 50M staked), `ecosystem`, `contributors` (single 200M), `builders`, `treasury`, `liquidity`, `community`, `strategic` |
-| **Supply** | 1,051,000,000 KRN (1B + 1M faucet + 50M alice) |
-| **Keyring** | `~/.norynth/keyring-test/` on the VM |
+| **Genesis accounts** | the testnet genesis accounts (see the testnet genesis) |
+| **Supply** | 1,051,000,000 KRN (1B + 1M faucet + 50M validator) |
+| **Keyring** | the testnet keyring (on the VM) |
 | **Purpose** | Prove the settlement path: wasm, contracts, upgrade |
 | **Status** | Live, wasm-capable since 2026-10-26. Contract store/instantiate/execute proven. |
 
-**The testnet genesis is not a template for mainnet.** It has `faucet` and
-`alice` (testnet-only), and `contributors` is a single account (mainnet
-splits it into four).
+**The testnet genesis is not a template for mainnet.** It includes testnet-only
+accounts (a faucet and a validator allocation), and its `contributors` bucket is
+a single account (mainnet splits it into four).
 
 ---
 
@@ -34,12 +34,12 @@ splits it into four).
 |---|---|
 | **Chain ID** | `norynth-1` |
 | **Host** | Not yet (needs x86_64 VPS, ≥16 GB RAM — see `MAINNET-READINESS.md` §1) |
-| **Home** | `~/.norynth-mainnet/` (to be created on the VPS) |
+| **Home** | a dedicated mainnet home (on the VPS, later) |
 | **Denom** | `ukrn` (same unit, different supply/accounts) |
 | **Supply** | 1,000,000,000 KRN (fixed, mint disabled) |
-| **Genesis accounts** | 10: `ecosystem`, `builders`, `treasury`, `liquidity`, `community`, `strategic`, `founder`, `devs`, `advisors`, `future-hires` — **no `faucet`, no `alice`** |
+| **Genesis accounts** | 10: `ecosystem`, `builders`, `treasury`, `liquidity`, `community`, `strategic`, `founder`, `devs`, `advisors`, `future-hires` — **no faucet, no validator allocation** |
 | **Vesting** | `ContinuousVestingAccount` for founder (4y/1y cliff), devs (3y/6m), advisors (2y/6m) |
-| **Keyring** | `~/.norynth-mainnet-keys/` on WSL (mnemonics in VeraCrypt `D:\secure.vc`) |
+| **Keyring** | a dedicated mainnet keyring on a separate machine (not the testnet host); mnemonics stored offline, encrypted |
 | **Genesis construction** | `scripts/genesis-constructor/` (Go program + `accounts.json`) |
 | **Purpose** | Settlement with real value |
 
@@ -55,13 +55,13 @@ splits it into four).
 | Aspect | Testnet | Mainnet | Shared? |
 |---|---|---|---|
 | **Chain ID** | `norynth` | `norynth-1` | ❌ Different |
-| **Accounts** | 9 (incl. faucet, alice) | 10 (no faucet, alice) | ❌ Different |
-| **Addresses** | Testnet keys (VM) | Fresh mainnet keys (WSL) | ❌ Different |
-| **Keyring** | `~/.norynth/keyring-test/` (VM) | `~/.norynth-mainnet-keys/` (WSL) | ❌ Different |
-| **Home** | `~/.norynth/` (VM) | `~/.norynth-mainnet/` (VPS, later) | ❌ Different |
+| **Accounts** | testnet genesis accounts | 10 mainnet accounts | ❌ Different |
+| **Addresses** | testnet keys | fresh mainnet keys | ❌ Different |
+| **Keyring** | on the testnet host | on a separate machine | ❌ Different |
+| **Home** | on the testnet host | on the mainnet host (later) | ❌ Different |
 | **Denom** | `ukrn` | `ukrn` | ✅ Same (same unit) |
 | **Binary** | `norynthd` (wasm) | `norynthd` (wasm) | ✅ Same code |
-| **Genesis** | VM's `config/genesis.json` | `scripts/genesis-constructor/` output | ❌ Different |
+| **Genesis** | the testnet genesis | `scripts/genesis-constructor/` output | ❌ Different |
 | **Purpose** | Prove the path | Settlement with real value | ❌ Different |
 
 **Same binary, different chains.** The binary (`norynthd`) is identical — it
@@ -72,8 +72,8 @@ runs both. What separates them is the **chain ID**, the **genesis**, the
 
 ## What this means in practice
 
-- **Do not reuse testnet keys for mainnet.** The mainnet keys are in
-  `~/.norynth-mainnet-keys/`, generated fresh. The testnet keys are on the VM.
+- **Do not reuse testnet keys for mainnet.** The mainnet keys are generated
+  fresh, separate from the testnet keys.
 - **Do not reuse the testnet genesis for mainnet.** The mainnet genesis is
   built by the constructor, with 10 accounts and `ContinuousVestingAccount`.
 - **Do not run mainnet on the testnet VM.** The testnet VM is a 1 GB micro,
@@ -96,8 +96,6 @@ runs both. What separates them is the **chain ID**, the **genesis**, the
 - Developer portal: [`docs/DEVELOPERS.md`](./docs/DEVELOPERS.md)
 - Historical (2025 Ignite): [`docs/_historical-2025/`](./docs/_historical-2025/)
 
-**Internal (not in the repo — WSL home, `~/docs/projects/`):**
-- Tokenomics design: `MAINNET-TOKENOMICS-DESIGN-2026-10-25.md`
-- Architecture: `MAINNET-ARCHITECTURE-2026-10-26.md`
-- Readiness: `MAINNET-READINESS.md`
-- Repo audit: `REPO-AUDIT-2026-10-27.md`
+**Internal (not in the repo):**
+- Tokenomics design, architecture, readiness, and the repo audit are
+  maintained internally and are not mirrored to this repository.

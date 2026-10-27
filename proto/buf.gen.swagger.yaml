@@ -1,5 +1,5 @@
-# This file is auto-generated from Ignite. You can edit
-# the file content but do not change the file name or path.
+# Buf codegen config. Hand-editable — this is NOT auto-generated.
+# Changing the filename or path will break `buf generate` (proto-gen).
 #
 # buf.gen.swagger.yaml
 #

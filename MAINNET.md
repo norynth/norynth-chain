@@ -86,7 +86,18 @@ runs both. What separates them is the **chain ID**, the **genesis**, the
 
 ## Cross-references
 
-- Tokenomics: `docs/projects/MAINNET-TOKENOMICS-DESIGN-2026-10-25.md`
-- Architecture: `docs/projects/MAINNET-ARCHITECTURE-2026-10-26.md`
-- Readiness: `docs/projects/MAINNET-READINESS.md`
-- Genesis constructor: `scripts/genesis-constructor/`
+**Public docs (live):**
+- Chain docs: https://chain.norynth.com/docs/
+- Tokenomics: https://chain.norynth.com/tokenomics
+- Cloud / infrastructure: https://cloud.norynth.com/
+
+**In-repo:**
+- Genesis constructor: [`scripts/genesis-constructor/`](./scripts/genesis-constructor/)
+- Developer portal: [`docs/DEVELOPERS.md`](./docs/DEVELOPERS.md)
+- Historical (2025 Ignite): [`docs/_historical-2025/`](./docs/_historical-2025/)
+
+**Internal (not in the repo — WSL home, `~/docs/projects/`):**
+- Tokenomics design: `MAINNET-TOKENOMICS-DESIGN-2026-10-25.md`
+- Architecture: `MAINNET-ARCHITECTURE-2026-10-26.md`
+- Readiness: `MAINNET-READINESS.md`
+- Repo audit: `REPO-AUDIT-2026-10-27.md`

@@ -1,35 +1,33 @@
 # Protocol Buffer Definitions
 
 ## Directory Structure
+
 ```
-proto/  # Root of all protocol buffers
-├── norynth/  # Chain-specific types
-│   ├── genesis.proto
-│   ├── params.proto
-│   └── tx.proto
-└── third_party/  # Cosmos SDK dependencies
-    ├── cosmos/  # Cosmos SDK types
-    └── ibc/  # IBC-related definitions
+proto/
+├── norynth/norynth/   # Chain-specific types (genesis, params, query, tx, module)
+├── buf.gen.*.yaml     # Codegen configs (gogo, pulsar, sta, swagger, ts)
+├── buf.lock           # Dependency lock
+└── buf.yaml           # Buf workspace config
 ```
+
+There is no `third_party/` directory — the Cosmos SDK and IBC protos are
+resolved by `buf` from `buf.lock`, not vendored.
 
 ## Compilation
-```bash
-# Rebuild all protobufs
-make proto-gen
 
-# Generate Swagger/OpenAPI documentation
-make proto-swagger-gen
+```bash
+make proto-gen            # rebuild all protobufs
+make proto-swagger-gen    # regenerate Swagger/OpenAPI
 ```
 
-## Versioning
-- Requires `libprotoc` 3.21.12
-- Compatible with Cosmos SDK `v0.47.0+`
+## Versions
 
-## Key Packages
+- Cosmos SDK **v0.50.13** (matches `go.mod` and the binary's
+  `cosmos_sdk_version`)
+- `buf` resolves dependencies from `buf.lock` — do not hand-edit it
 
-| Package               | Description                |
-|-----------------------|----------------------------|
-| `norynth.norynth`     | Core blockchain types      |
-| `cosmos.bank.v1beta1` | Token operations           |
-| `ibc.core.channel.v1` | IBC channel logic          |
+## Packages
 
+| Package           | Description             |
+|-------------------|-------------------------|
+| `norynth.norynth` | Core chain module types |

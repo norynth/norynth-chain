@@ -1,0 +1,15 @@
+{
+  "denom": "ukrn",
+  "accounts": [
+    {"name": "ecosystem",    "address": "norynth1rz68ecstyelnpy45areyrw785nwz90mf3dtqfm", "amount": 250000000000000, "type": "base"},
+    {"name": "builders",     "address": "norynth1gsx5gd0gjpllj9ydfxcrzet8y9g70wcvcnll3y", "amount": 150000000000000, "type": "base"},
+    {"name": "treasury",     "address": "norynth19hp2qy5a6jxfm9lnsamg38nlp5mcl7qvv36pa4", "amount": 150000000000000, "type": "base", "multisig": true},
+    {"name": "liquidity",    "address": "norynth14cw7cp6knt5sraxn36sjxqkaece8m7d2dlf0tz", "amount": 100000000000000, "type": "base"},
+    {"name": "community",    "address": "norynth19udrke7m6yz4648m4jullyavmwegf2d5jjd4dc", "amount": 100000000000000, "type": "base"},
+    {"name": "strategic",    "address": "norynth1jugazxh0pch8747knqzgez0t3rcxz58wg9rcyz", "amount":  50000000000000, "type": "base"},
+    {"name": "founder",      "address": "norynth19r8m7fzua0gqlp2gveg0nexy9p72ax9h5740yl", "amount": 120000000000000, "type": "continuous", "cliff_seconds": 31536000, "vest_seconds": 94608000},
+    {"name": "devs",         "address": "norynth13dvvgrxv00dnkpekd69j0tarckax0sqdr2usge", "amount":  40000000000000, "type": "continuous", "cliff_seconds": 15552000, "vest_seconds": 78840000},
+    {"name": "advisors",     "address": "norynth1wtavmmmghvlpupaf5xq4a63c8vq88uvpah4xd8", "amount":  20000000000000, "type": "continuous", "cliff_seconds": 15552000, "vest_seconds": 63072000},
+    {"name": "future-hires", "address": "norynth1uczx6320px6hkwr0fsxrknallvdxhwdv5zsvy3", "amount":  20000000000000, "type": "base", "multisig": true}
+  ]
+}

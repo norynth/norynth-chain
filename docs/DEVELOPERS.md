@@ -25,7 +25,7 @@ make docs
 
 The Norynth testnet faucet sends test KRN to your address.
 
-**Endpoint:** `https://faucet.chain.norynth.com/` (once DNS + nginx are configured;
+**Endpoint:** `https://testnet-faucet.norynth.com/` (once DNS + nginx are configured;
 during local development, use an SSH tunnel to `localhost:8000`).
 
 **Request:**
@@ -33,7 +33,7 @@ during local development, use an SSH tunnel to `localhost:8000`).
 ```bash
 curl -X POST -H "Content-Type: application/json" \
   -d '{"address":"norynth1...","coins":["10000000ukrn"]}' \
-  https://faucet.chain.norynth.com/
+  https://testnet-faucet.norynth.com/
 ```
 
 **Parameters:**
